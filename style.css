@@ -7,12 +7,10 @@ body {
 }
 
 .game-container {
-	height: 100vh;
-	width: 100vw;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    height: 100vh;
 }
 
 canvas {
@@ -22,14 +20,10 @@ canvas {
     box-sizing: content-box;
 }
 
-.btns {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	margin: 0 auto;
-	width: 100%;
+#btns {
+	text-align: center;
+    margin: auto;
 }
-
 button {
 	background-color: #fdef05;
 	border-radius: 8px;
@@ -38,6 +32,7 @@ button {
 	margin: 0;
 	padding: 5px 20px;
 	width: 100px;
+    margin: 0.5rem;
 }
 
 button:not(:last-child) {
@@ -59,13 +54,5 @@ p {
 }
 
 @media (max-width: 440px) {
-	button {
-		margin-top: 25px;
-	}
 
-	#up,
-	#down {
-		margin-left: 100%;
-		margin-right: 100%;
-	}
 }

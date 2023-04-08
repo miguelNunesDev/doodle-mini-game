@@ -15,8 +15,8 @@ export class Game {
 	}
 	getCanvasSize() {
 		// Return the smallest value of the screen
-		const wH = window.innerHeight;
-		const wW = window.innerWidth;
+		const wH = window.outerHeight;
+		const wW = window.outerWidth;
 		const size = 0.75;
 		const gameSize = wW < wH ? wW : wH;
 		return gameSize * size;
