@@ -30,9 +30,9 @@ button {
 	border-color: #ff6600;
 	font-family: inherit;
 	margin: 0;
-	padding: 5px 20px;
+	padding: 10px;
 	width: 100px;
-    margin: 0.5rem;
+    margin: 0.7rem;
 }
 
 button:not(:last-child) {
