@@ -1,20 +1,24 @@
 import { emojis } from './map.js';
 export class Player {
-	constructor(sprite = false, lives) {
+	constructor(sprite = false, lives = 3) {
 		this.position;
 		this.sprite = sprite || emojis.PLAYER;
-		this.lives = lives || 3;
+		this.lives = lives;
+		this.maxLives = lives;
 		this.context = game.context;
+	}
+	resetToSpawn() {
+		this.position = game.currentLevel.playerSpawnPos;
 	}
 	getHurt() {
 		--this.lives;
-		this.position = game.currentLevel.playerSpawnPos;
-		console.log({
-			live: this.lives,
-			pos: this.pos,
-			spawn: game.currentLevel.playerSpawnPos,
+		this.resetToSpawn();
+		game.ui.renderLives({
+			count: this.lives,
+			maxLives: this.maxLives,
 		});
-		if (lives <= 0) {
+
+		if (this.lives <= 0) {
 			game.gameOver();
 			return;
 		}
@@ -54,13 +58,21 @@ export class Player {
 		const enemies = game.currentLevel.entities.enemies;
 		const metas = game.currentLevel.entities.meta;
 		enemies.forEach((enemy) => {
-			if (this.collided(enemy)) this.getHurt();
+			if (this.collided(enemy)) {
+				game.currentLevel.map[enemy.index.y][enemy.index.x] =
+					'BOMB_COLLISION';
+				this.getHurt();
+				game.render();
+			}
 		});
 		metas.forEach((meta) => {
 			if (this.collided(meta)) this.reachMeta();
 		});
 	}
 	collided(entity) {
-		return entity.x.toFixed(0) == this.position.x.toFixed(0) && entity.y.toFixed(0) == this.position.y.toFixed(0);
+		return (
+			entity.x.toFixed(0) == this.position.x.toFixed(0) &&
+			entity.y.toFixed(0) == this.position.y.toFixed(0)
+		);
 	}
 }

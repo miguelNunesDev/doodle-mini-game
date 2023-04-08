@@ -1,3 +1,6 @@
+import { Level } from './Level.js';
+import { maps } from './map.js';
+
 export class Game {
 	constructor() {
 		/**
@@ -8,6 +11,7 @@ export class Game {
 		this.currentLevel;
 		this.player;
 		this.gridSize;
+		this.ui;
 	}
 	getCanvasSize() {
 		// Return the smallest value of the screen
@@ -20,11 +24,15 @@ export class Game {
 	start(level, player) {
 		this.currentLevel = level;
 		// LEVEL
-		this.currentLevel.parseMap();
 		this.player = player;
-		this.player.position = this.currentLevel.playerSpawnPos;
+		this.player.resetToSpawn();
 		this.resize();
-		this.render();
+		this.ui.setTimer();
+		const gameData = JSON.parse(localStorage.getItem('gameData'));
+		if (gameData) {
+			console.log({ gameData });
+			this.loadData(gameData);
+		}
 	}
 	resize() {
 		this.canvasSize = this.getCanvasSize();
@@ -36,15 +44,67 @@ export class Game {
 		this.currentLevel.cellSize =
 			this.canvasSize / this.currentLevel.gridSize;
 		this.currentLevel.context = this.context;
+		this.currentLevel = new Level(maps, this.currentLevel.index);
+		this.player.resetToSpawn();
 		this.render();
 	}
 	render() {
 		this.clear();
 		this.currentLevel.render();
-        this.player.onCollide();
+		this.player.onCollide();
 		this.player.render();
 	}
 	clear() {
 		this.context.clearRect(0, 0, this.width, this.height);
+	}
+	winGame() {
+		alert(`Has ganado! Tu tiempo: ${this.ui.time}`);
+		this.ui.bestTime =
+			this.ui.time < this.ui.bestTime ? this.ui.time : this.ui.bestTime;
+
+		this.restartGame();
+	}
+	nextLevel() {
+		const i = ++this.currentLevel.index;
+		if (!maps[i]) {
+			this.winGame();
+		}
+		this.currentLevel = new Level(maps, i);
+		this.player.resetToSpawn();
+		this.render();
+		this.saveData();
+	}
+	gameOver() {
+		alert('Has perdido');
+		this.restartGame();
+	}
+	restartGame() {
+		this.currentLevel = new Level(maps, 0);
+		this.player.resetToSpawn();
+		this.player.lives = 3;
+		this.render();
+		this.ui.setTimer();
+		this.ui.renderLives({
+			count: 3,
+			maxLives: 3,
+		});
+		this.ui.renderBestTime();
+		this.saveData();
+	}
+	saveData() {
+		const data = {
+			levelIndex: this.currentLevel.index,
+			lives: this.player.lives,
+			time: this.ui.time,
+			bestTime: this.ui.bestTime,
+		};
+		localStorage.setItem('gameData', JSON.stringify(data));
+	}
+	loadData({ levelIndex, lives, time, bestTime }) {
+		this.currentLevel = new Level(maps, levelIndex);
+		this.player.resetToSpawn();
+		this.player.lives = lives;
+		this.ui.setTimer(time);
+		this.ui.bestTime = bestTime;
 	}
 }

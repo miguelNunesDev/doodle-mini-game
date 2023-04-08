@@ -1,10 +1,11 @@
 import { emojis } from './map.js';
 export class Level {
-	constructor(rawMap) {
+	constructor(mapArray, i) {
 		/**
 		 * @type {String}
 		 */
-		this.rawMap = rawMap;
+		this.rawMap = mapArray[i];
+        this.index = i;
 		this.context = game.context;
 		this.cellSize;
 		this.gridSize;
@@ -14,17 +15,18 @@ export class Level {
 			enemies: [],
 			meta: [],
 		};
+        this.parseMap();
 	}
 	parseMap() {
 		const row = this.rawMap.trim().split('\n');
 		this.gridSize = row.length;
 		this.cellSize = game.getCanvasSize() / this.gridSize;
 		const cols = row.map((row) => row.trim().split(''));
-		cols.forEach((row, i) => {
-			const cellY = (i + 1) * this.cellSize - this.offset * 0.5;
-			row.forEach((col, i) => {
-				const cellX = (i + 1) * this.cellSize - this.offset * 0.5;
-				this.saveEntitiesStatus(col, { x: cellX, y: cellY }, i);
+		cols.forEach((row, rowI) => {
+			const cellY = (rowI + 1) * this.cellSize - this.offset * 0.5;
+			row.forEach((col, colI) => {
+				const cellX = (colI + 1) * this.cellSize - this.offset * 0.5;
+				this.saveEntitiesStatus(col, { x: cellX, y: cellY }, {y:rowI, x:colI});
 			});
 		});
 		this.map = cols;
@@ -48,10 +50,10 @@ export class Level {
 				console.log(this.playerSpawnPos);
 				break;
 			case 'X':
-				this.entities.enemies.push({ ...pos, i: i });
+				this.entities.enemies.push({ ...pos, index: i });
 				break;
 			case 'I':
-				this.entities.meta.push({ ...pos, i: i });
+				this.entities.meta.push({ ...pos, index: i });
 			default:
 				break;
 		}
