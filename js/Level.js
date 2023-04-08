@@ -20,7 +20,7 @@ export class Level {
 	parseMap() {
 		const row = this.rawMap.trim().split('\n');
 		this.gridSize = row.length;
-		this.cellSize = game.getCanvasSize() / this.gridSize;
+		this.cellSize = Number((game.getCanvasSize() / this.gridSize).toFixed(0));
 		const cols = row.map((row) => row.trim().split(''));
 		cols.forEach((row, rowI) => {
 			const cellY = (rowI + 1) * this.cellSize - this.offset * 0.5;

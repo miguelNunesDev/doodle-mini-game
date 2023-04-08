@@ -34,19 +34,14 @@ export class Player {
 		};
 		this.position = {
 			x:
-				pos.x.toFixed(0) > 0 && pos.x <= game.width
+            Number(pos.x.toFixed(0)) > 0 && pos.x <= game.width.toFixed(0)
 					? pos.x
 					: this.position.x,
 			y:
-				pos.y.toFixed(0) > 0 && pos.y <= game.height
+            Number(pos.y.toFixed(0)) > 0 && pos.y <= game.height.toFixed(0)
 					? pos.y
 					: this.position.y,
 		};
-		console.log({
-			pos: { x: pos.x.toFixed(0), y: pos.y.toFixed(0) },
-			cell: game.currentLevel.cellSize.toFixed(0),
-			player: this.position,
-		});
 	}
 	render(sprite = false) {
 		this.sprite = sprite || this.sprite;
@@ -71,8 +66,8 @@ export class Player {
 	}
 	collided(entity) {
 		return (
-			entity.x.toFixed(0) == this.position.x.toFixed(0) &&
-			entity.y.toFixed(0) == this.position.y.toFixed(0)
+			Number(entity.x.toFixed(0)) == this.position.x &&
+			entity.y.toFixed(0) == this.position.y
 		);
 	}
 }
