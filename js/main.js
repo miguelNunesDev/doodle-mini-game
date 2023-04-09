@@ -11,7 +11,6 @@ const game = window.game;
 const livesUI = document.querySelector('#lives');
 const timeUI = document.querySelector('#time');
 const bestTimeUI = document.querySelector('#bestTime');
-context.fillRect;
 
 window.addEventListener('load', () => {
 	game.ui = new UI({ livesUI, timeUI, bestTimeUI });
