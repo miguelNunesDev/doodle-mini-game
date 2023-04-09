@@ -35,6 +35,13 @@ const keys = [
 			game.render();
 		},
 	},
+    {
+		input: 'r',
+		action: () => {
+			game.restartGame();
+			game.render();
+		},
+	},
 ];
 const btns = [
 	{
@@ -73,6 +80,7 @@ const btns = [
 			game.render();
 		},
 	},
+    
 ];
 
 export {btns,keys}

@@ -19,7 +19,7 @@ export class Game {
 		const wW = window.outerWidth;
 		const size = 0.75;
 		const gameSize = wW < wH ? wW : wH;
-		return gameSize * size;
+		return Number((gameSize * size).toFixed(0));
 	}
 	start(level, player) {
 		this.currentLevel = level;

@@ -28,17 +28,18 @@ export class Player {
 		game.nextLevel();
 	}
 	move(pos) {
-		pos = {
+        let offset = 10;
+        pos = {
 			x: this.position.x + (pos.x || 0),
 			y: this.position.y + (pos.y || 0),
 		};
 		this.position = {
 			x:
-            Number(pos.x.toFixed(0)) > 0 && pos.x <= game.width.toFixed(0)
+            Number(pos.x.toFixed(0)) > 0 && pos.x <= game.width + offset
 					? pos.x
 					: this.position.x,
 			y:
-            Number(pos.y.toFixed(0)) > 0 && pos.y <= game.height.toFixed(0)
+            Number(pos.y.toFixed(0)) > 0 && pos.y <= game.height + offset
 					? pos.y
 					: this.position.y,
 		};
